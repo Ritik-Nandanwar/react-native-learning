@@ -1,58 +1,25 @@
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
-import loading from "./assets/loading.gif";
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function App() {
-  var [isLoading, setIsLoading] = useState(true);
-  var [imageFromTheInternet, setImageFromTheInternet] = useState(
-    "https://picsum.photos/200/300"
-  );
-  useEffect(() => {
-    getImage();
-  }, []);
-  const getImage = async (e) => {
-    // e.preventDefault();
-    setIsLoading(true);
-    const data = await fetch("https://dummyjson.com/products").then((res) =>
-      res.json()
-    );
-    var rand_number = Math.ceil(Math.random() * 29);
-    console.log(data?.products[rand_number]?.images[1]);
-    setImageFromTheInternet(data?.products[rand_number]?.images[1]);
-    setIsLoading(false);
-  };
+import { NavigationContainer } from "@react-navigation/native";
+import Login from "./Screens/Login";
+import AllNotes from "./Screens/AllNotes";
+const App = () => {
+  const Stack = createNativeStackNavigator();
   return (
-    <View style={styles.mainView}>
-      {isLoading ? (
-        <Image source={loading}></Image>
-      ) : (
-        <View>
-          <Image
-            source={{
-              uri: imageFromTheInternet,
-            }}
-            height={200}
-            width={200}
-          />
-          <Button title="Get Random Image" onPress={getImage} />
-        </View>
-      )}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Login} />
+        <Stack.Screen name="AllNotes" component={AllNotes} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  mainView: {
-    flex: 1,
-    justifyContent: "center", //Centered vertically
-    alignItems: "center", //Centered horizontally
+  main: {
+    color: "#222",
   },
 });
+export default App;
