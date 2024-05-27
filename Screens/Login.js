@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -13,14 +14,19 @@ import { auth } from "../firebase.config";
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLogginIn, setIsLogginIn] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, password);
+    setIsLogginIn(true);
     try {
       createUserWithEmailAndPassword(auth, email, password).then((userCred) => {
         const user = userCred;
         console.log(user);
+        // Alert.alert("Logged inNNNNNNN");
+        navigation.navigate("Notes");
+        setIsLogginIn(false);
       });
     } catch (err) {
       console.log(err);
@@ -30,7 +36,7 @@ const Login = ({ navigation }) => {
   };
   return (
     <View style={style.container}>
-      <Text>Login</Text>
+      <Text style={style.heading}>Login</Text>
       <KeyboardAvoidingView style={style.mainArea}>
         <View style={style.inputField}>
           <TextInput
@@ -47,6 +53,7 @@ const Login = ({ navigation }) => {
           />
         </View>
         <Button title="Login" onPress={handleSubmit} />
+        <View>{isLogginIn ? <ActivityIndicator size={"large"} /> : null}</View>
       </KeyboardAvoidingView>
       <Button
         title="All Notes"
@@ -64,10 +71,17 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  heading: {
+    fontSize: 24,
+    marginBottom: 4,
+    fontWeight: "bold",
+  },
   mainArea: {
     borderColor: "#1e1e1e",
     borderWidth: 6,
     padding: 44,
+    borderRadius: 18,
+    marginVertical: 12,
     // display: "flex",
     // flexDirection: "column",
     // justifyContent: "space-between",
@@ -77,7 +91,7 @@ const style = StyleSheet.create({
     borderWidth: 3,
     width: 240,
     padding: 2,
-    marginVertical: 3,
+    marginVertical: 6,
   },
 });
 
