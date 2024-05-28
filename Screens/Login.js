@@ -82,9 +82,6 @@ const style = StyleSheet.create({
     padding: 44,
     borderRadius: 18,
     marginVertical: 12,
-    // display: "flex",
-    // flexDirection: "column",
-    // justifyContent: "space-between",
   },
   inputField: {
     borderColor: "#131313",
